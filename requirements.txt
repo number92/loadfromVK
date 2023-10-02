@@ -1,2 +1,4 @@
 pandas == 2.0.2
 python-dotenv == 1.0.0
+pyinstaller==5.13.0
+requests==2.31.0

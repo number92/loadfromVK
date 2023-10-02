@@ -17,7 +17,7 @@ dotenv_path = ".env"
 load_dotenv()
 
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
-VERSION = os.getenv('VERSION')
+VERSION = os.getenv('VERSION', default='5.131')
 ACCOUNT_ID: int = os.getenv('ACCOUNT_ID')
 ID_CLIENT = os.getenv('ID_CLIENT')
 ID_APP: int = os.getenv('ID_APP')
@@ -26,7 +26,7 @@ YESTERDAY = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
 TIME = datetime.today().strftime("%H-%M-%S")
 URL = (
     "https://oauth.vk.com/authorize?client_id="
-    + f"{ID_APP}&display=page&redirect_uri="
+    + f"{os.getenv('ID_APP')}&display=page&redirect_uri="
     + "https://oauth.vk.com/blank.html&scope="
     + f"ads&response_type=token&v={VERSION}")
 help_text = [', для пропуска шага нажмите Enter или введите новый ID: ',
@@ -128,12 +128,15 @@ def refresh_token():
 
 def get_api_answer():
     try:
+        if ACCESS_TOKEN == 'None':
+            refresh_token()
         logging.info('Запрос данных...')
-        r = requests.get('https://api.vk.com/method/ads.getAds', params={
-                         'access_token': ACCESS_TOKEN,
-                         'client_id': ID_CLIENT,
-                         'v': VERSION,
-                         'account_id': ACCOUNT_ID,
+        r = requests.get('https://api.vk.com/method/ads.getAds',
+                         params={
+                            'access_token': os.getenv('ACCESS_TOKEN'),
+                            'client_id': ID_CLIENT,
+                            'v': VERSION,
+                            'account_id': ACCOUNT_ID,
                          })
         if r.json().get('error'):
             print(f'Ошибка: {r.json()["error"]["error_msg"]}')
@@ -162,7 +165,7 @@ def get_campaign_id(data):
             ad_campaign_dict[data[i]['id']] = data[i]['campaign_id']
     except KeyError as err:
         logging.error(f'Ошибка{err}, {i}')
-        raise KeyError('Ошибка при получение id компаний: {err}')
+        raise KeyError(f'Ошибка при получение id компаний: {err}')
     return ad_campaign_dict
 
 
@@ -218,8 +221,9 @@ def data_proccesing(ad_campaign_dict):
                                 'link_external_clicks', 0))
                         ads_join_rate_list.append(
                                 data_stats[i]['stats'][j].get('join_rate', 0))
-                time.sleep(0.5)
+                time.sleep(0.6)
             except KeyError:
+                logging.error(f'Ошибка в запросе API{r["content"]["error"]}')
                 continue
     except OSError as err:
         logging.error(f'Ошибка в запросе API{err}')

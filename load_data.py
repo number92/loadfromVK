@@ -204,6 +204,8 @@ def data_proccesing(ad_campaign_dict):
                 data_stats = r.json()['response']
                 for i in range(len(data_stats)):
                     for j in range(len(data_stats[i]['stats'])):
+                        if len(data_stats[i]['stats']) == 0:
+                            return
                         ads_campaign_list.append(ad_campaign_dict[ad_id])
                         ads_id_list.append(data_stats[i]['id'])
                         ads_impressions_list.append(

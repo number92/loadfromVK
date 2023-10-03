@@ -25,13 +25,12 @@
 - __link_external_clicks__ - количество уникальных переходов по ссылкам
 - __join_rate__ - вступления в группу
 
-[Полный список полей, представленных методом ads.getStatistics](https://dev.vk.com/method/ads.getStatistics)
+Полный список полей, представленных методом [ads.getStatistics](https://dev.vk.com/method/ads.getStatistics)
 
 ## Инструкция
 1. Зарегистрируйте приложение в ВК.
    - Следуя [ссылке](https://vk.com/apps?act=manage), создайте приложение. ID этого приложения будет необходим для запросов
 2. В папке запустите исполняемый файл(load_data.exe). Он автономен, его можно перенести в удобное вам место.
-Заполните настройки личного кабинета ВК. Пример для заполнения доступен в файле [.env.example](https://github.com/number92/loadfromVK/blob/main/.env.example)
-![Образец](https://github.com/number92/loadfromVK/blob/main/screenshots/1.png)
-Получите и вставьте access_token
-![Образец](https://github.com/number92/loadfromVK/blob/main/screenshots/2.png)
+   - Заполните настройки личного кабинета ВК. Пример для заполнения доступен в файле [.env.example](https://github.com/number92/loadfromVK/blob/main/.env.example)
+   - Следуя шагам, заполните access_token  и введите желаемый период. Выполнение запросов займет какое-то время. Скриншоты можно увидеть [здесь](https://github.com/number92/loadfromVK/tree/main/screenshots)
+3. После выполнения в текущей директории будет создан csv-файл. Загрузите его на любой онлайн-конвертер если необходимо поменять формат, например [этот](https://tableconvert.com/ru/csv-to-excel)
